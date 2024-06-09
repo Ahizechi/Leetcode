@@ -2,31 +2,26 @@ class Solution(object):
     def romanToInt(self, s):
         romanDict = {
             \I\: 1,
-            \IV\: 4,
             \V\: 5,
-            \IX\: 9,
             \X\: 10,
-            \XL\: 40,
             \L\: 50,
-            \XC\: 90,
             \C\: 100,
-            \CD\: 400,
             \D\: 500,
-            \CM\: 900,
             \M\: 1000
         }
 
         total = 0
-        i = 0
-        while i < len(s):
-            # Check if the current and next character form a valid Roman numeral and prevent index out of range error
-            if i + 1 < len(s) and s[i:i+2] in romanDict:
-                total += romanDict[s[i:i+2]]
-                i += 2  # Move past the next character as it's part of the current numeral
+        prev_value = 0
+        
+        # Process each character from the end to the start
+        for char in reversed(s):
+            value = romanDict[char]
+            
+            # If the current value is less than the previous one, subtract, otherwise add
+            if value < prev_value:
+                total -= value
             else:
-                # Single character numeral
-                total += romanDict[s[i]]
-                i += 1
+                total += value
+                prev_value = value
 
         return total
-
